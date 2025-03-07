@@ -1,4 +1,4 @@
--- Code for the Data Analyst Study Guide walkthrough
+-- Code for the LearnSQL.com Data Analyst Study Guide walkthrough
 -- Data: Tableau Superstore - Orders
 -- Language: MySQL on MySQL Workbench
 
