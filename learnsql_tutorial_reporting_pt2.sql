@@ -41,16 +41,17 @@ Create a report of customer-based finance metrics per product category and sub c
 */
 
 -- SELECT
--- 	  Category,
---       Sub_Category,
+-- 	  Region,
+--       State,
+--       City,
 --       ROUND(SUM(Sales) / COUNT(DISTINCT `Customer_ID`), 1) AS ARPU,
---       ROUND(SUM(Profit) / COUNT(DISTINCT `Customer_ID`), 1) AS APPU,
+--       ROUND(SUM(Profit) / COUNT(DISTINCT `Customer_ID`), 1) AS APPU
 -- FROM 
 --     `Tableau Superstore`.orders
 -- GROUP BY
--- 	1, 2
+-- 	1, 2, 3
 -- ORDER BY 
--- 	1, 2
+-- 	4 DESC
 
 /*
 Orders
@@ -246,42 +247,42 @@ What are the 3 items with the lowest profit margin by location? This considers i
 with ties show them
 */
 
-WITH product_metrics AS (
-    SELECT 
-        product_id, 
-        state,
-        city,
-        ROUND(SUM(Sales), 1) AS sales_total,
-        ROUND(SUM(Profit), 1) AS profit_total,
-        ROUND(SUM(Profit)/SUM(Sales), 2) as profit_margin
-    FROM 
-        `Tableau Superstore`.orders
-    GROUP BY 1, 2, 3
-),
-ranked_products AS (
-    SELECT 
-        product_id,
-        state,
-        city, 
-        sales_total, 
-        profit_total,
-        profit_margin,
---         DENSE_RANK() OVER (ORDER BY sales_total ASC) AS sales_rank,
-        DENSE_RANK() OVER (ORDER BY profit_margin ASC) AS profit_rank
-    FROM 
-        product_metrics
-	WHERE profit_margin IS NOT NULL
-)
-SELECT 
-    product_id,
-    state,
-    city,
-    sales_total, 
-    profit_margin,
---     sales_rank,
-    profit_rank
-FROM 
-    ranked_products
-WHERE 
-    profit_rank <= 3
-ORDER BY 5 ASC;
+-- WITH product_metrics AS (
+--     SELECT 
+--         product_id, 
+--         state,
+--         city,
+--         ROUND(SUM(Sales), 1) AS sales_total,
+--         ROUND(SUM(Profit), 1) AS profit_total,
+--         ROUND(SUM(Profit)/SUM(Sales), 2) as profit_margin
+--     FROM 
+--         `Tableau Superstore`.orders
+--     GROUP BY 1, 2, 3
+-- ),
+-- ranked_products AS (
+--     SELECT 
+--         product_id,
+--         state,
+--         city, 
+--         sales_total, 
+--         profit_total,
+--         profit_margin,
+-- --         DENSE_RANK() OVER (ORDER BY sales_total ASC) AS sales_rank,
+--         DENSE_RANK() OVER (ORDER BY profit_margin ASC) AS profit_rank
+--     FROM 
+--         product_metrics
+-- 	WHERE profit_margin IS NOT NULL
+-- )
+-- SELECT 
+--     product_id,
+--     state,
+--     city,
+--     sales_total, 
+--     profit_margin,
+-- --     sales_rank,
+--     profit_rank
+-- FROM 
+--     ranked_products
+-- WHERE 
+--     profit_rank <= 3
+-- ORDER BY 5 ASC;
